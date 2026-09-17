@@ -27,7 +27,7 @@ def home():
     conn = sqlite3.connect("database.db")
 
     applications = conn.execute(
-        "SELECT * FROM applications"
+    "SELECT * FROM applications ORDER BY date DESC"
     ).fetchall()
 
     conn.close()
