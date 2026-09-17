@@ -135,6 +135,30 @@ def delete_application(id):
 
     return redirect("/")
 
+@app.route("/api/applications", methods=["GET"])
+def get_applications():
+    conn = sqlite3.connect("database.db")
+
+    applications = conn.execute(
+        "SELECT * FROM applications ORDER BY date DESC"
+    ).fetchall()
+
+    conn.close()
+
+    results = []
+
+    for application in applications:
+        results.append({
+            "id": application[0],
+            "company": application[1],
+            "job_title": application[2],
+            "date": application[3],
+            "status": application[4],
+            "url": application[5]
+        })
+
+    return results
+
 
 if __name__ == "__main__":
     init_db()
