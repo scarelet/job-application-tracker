@@ -51,6 +51,18 @@
 
         <h2>My Applications</h2>
 
+    <form method="GET" action="/">
+        <label for="status">Filter by Status:</label>
+
+    <select id="status" name="status" onchange="this.form.submit()">
+        <option value="All" {% if selected_status == "All" %}selected{% endif %}>All</option>
+        <option value="Applied" {% if selected_status == "Applied" %}selected{% endif %}>Applied</option>
+        <option value="Interview" {% if selected_status == "Interview" %}selected{% endif %}>Interview</option>
+        <option value="Offer" {% if selected_status == "Offer" %}selected{% endif %}>Offer</option>
+        <option value="Rejected" {% if selected_status == "Rejected" %}selected{% endif %}>Rejected</option>
+    </select>
+    </form>
+
         <table>
             <thead>
                 <tr>
@@ -70,6 +82,8 @@
                     <td>{{ application[3] }}</td>
                     <td>{{ application[4] }}</td>
                     <td>
+                        <a href="/edit/{{ application[0] }}">Edit</a>
+    |
                         <a href="/delete/{{ application[0] }}">Delete</a>
                     </td>
                 </tr>

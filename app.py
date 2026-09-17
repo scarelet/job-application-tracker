@@ -26,25 +26,36 @@ def init_db():
 def home():
     conn = sqlite3.connect("database.db")
 
-    applications = conn.execute(
-    "SELECT * FROM applications ORDER BY date DESC"
+    all_applications = conn.execute(
+        "SELECT * FROM applications ORDER BY date DESC"
     ).fetchall()
+
+    selected_status = request.args.get("status", "All")
+
+    if selected_status == "All":
+        applications = all_applications
+    else:
+        applications = conn.execute(
+            "SELECT * FROM applications WHERE status = ? ORDER BY date DESC",
+            (selected_status,)
+        ).fetchall()
 
     conn.close()
 
-    total = len(applications)
-    interviews = sum(1 for app in applications if app[4] == "Interview")
-    offers = sum(1 for app in applications if app[4] == "Offer")
-    rejected = sum(1 for app in applications if app[4] == "Rejected")
+    total = len(all_applications)
+    interviews = sum(1 for app in all_applications if app[4] == "Interview")
+    offers = sum(1 for app in all_applications if app[4] == "Offer")
+    rejected = sum(1 for app in all_applications if app[4] == "Rejected")
 
     return render_template(
-    "index.html",
-    total=total,
-    interviews=interviews,
-    offers=offers,
-    rejected=rejected,
-    applications=applications
-)
+        "index.html",
+        total=total,
+        interviews=interviews,
+        offers=offers,
+        rejected=rejected,
+        applications=applications,
+        selected_status=selected_status
+    )
 
 
 @app.route("/add", methods=["GET", "POST"])
@@ -71,8 +82,42 @@ def add_application():
 
     return render_template("add_application.html")
 
-@app.route("/delete/<int:id>")
-def delete_application(id):
+@app.route("/edit/<int:id>", methods=["GET", "POST"])
+def edit_application(id):
+    conn = sqlite3.connect("database.db")
+
+    if request.method == "POST":
+        company = request.form["company"]
+        job_title = request.form["job_title"]
+        date = request.form["date"]
+        status = request.form["status"]
+        url = request.form["url"]
+
+        conn.execute(
+            """
+            UPDATE applications
+            SET company = ?, job_title = ?, date = ?, status = ?, url = ?
+            WHERE id = ?
+            """,
+            (company, job_title, date, status, url, id)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/")
+
+    application = conn.execute(
+        "SELECT * FROM applications WHERE id = ?",
+        (id,)
+    ).fetchone()
+
+    conn.close()
+
+    return render_template(
+        "edit_application.html",
+        application=application
+    )
     conn = sqlite3.connect("database.db")
 
     conn.execute(

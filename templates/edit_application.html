@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Application</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Edit Job Application</h1>
+
+        <form method="POST">
+
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" value="{{ application[1] }}">
+
+            <label for="job_title">Job Title</label>
+            <input type="text" id="job_title" name="job_title" value="{{ application[2] }}">
+
+            <label for="date">Application Date</label>
+            <input type="date" id="date" name="date" value="{{ application[3] }}">
+
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="Applied" {% if application[4] == "Applied" %}selected{% endif %}>Applied</option>
+                <option value="Interview" {% if application[4] == "Interview" %}selected{% endif %}>Interview</option>
+                <option value="Offer" {% if application[4] == "Offer" %}selected{% endif %}>Offer</option>
+                <option value="Rejected" {% if application[4] == "Rejected" %}selected{% endif %}>Rejected</option>
+            </select>
+
+            <label for="url">Job Posting URL</label>
+            <input type="url" id="url" name="url" value="{{ application[5] }}">
+
+            <button type="submit">Save Changes</button>
+
+        </form>
+
+        <br>
+
+        <a href="/" class="back-button">← Back to Dashboard</a>
+
+    </div>
+
+</body>
+</html>
