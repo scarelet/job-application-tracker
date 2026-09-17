@@ -82,6 +82,7 @@ def add_application():
 
     return render_template("add_application.html")
 
+
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit_application(id):
     conn = sqlite3.connect("database.db")
@@ -118,6 +119,10 @@ def edit_application(id):
         "edit_application.html",
         application=application
     )
+
+
+@app.route("/delete/<int:id>")
+def delete_application(id):
     conn = sqlite3.connect("database.db")
 
     conn.execute(
@@ -130,6 +135,8 @@ def edit_application(id):
 
     return redirect("/")
 
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True)
+
