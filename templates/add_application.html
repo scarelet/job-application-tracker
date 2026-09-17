@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Application</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Add Job Application</h1>
+
+        <form method="POST" action="/add">
+
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" placeholder="e.g. RBC">
+
+            <label for="job_title">Job Title</label>
+            <input type="text" id="job_title" name="job_title" placeholder="e.g. Software Developer Intern">
+
+            <label for="date">Application Date</label>
+            <input type="date" id="date" name="date">
+
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="Applied">Applied</option>
+                <option value="Interview">Interview</option>
+                <option value="Offer">Offer</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+
+            <label for="url">Job Posting URL</label>
+            <input type="url" id="url" name="url" placeholder="https://...">
+
+            <button type="submit">Save Application</button>
+
+        </form>
+
+        <br>
+
+        <a href="/" class="back-button">← Back to Dashboard</a>
+
+    </div>
+
+</body>
+</html>
+

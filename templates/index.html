@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Job Tracker</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Job Application Tracker</h1>
+
+        <p class="subtitle">
+            Keep track of your job applications in one place.
+        </p>
+
+        <div class="dashboard">
+
+            <div class="card">
+                <h3>Applications</h3>
+                <p>{{ total }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Interviews</h3>
+                <p>{{ interviews }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Offers</h3>
+                <p>{{ offers }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Rejected</h3>
+                <p>{{ rejected }}</p>
+            </div>
+
+        </div>
+
+        <a href="/add">
+            <button type="button">Add Application</button>
+        </a>
+
+        <h2>My Applications</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Job Title</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application[1] }}</td>
+                    <td>{{ application[2] }}</td>
+                    <td>{{ application[3] }}</td>
+                    <td>{{ application[4] }}</td>
+                    <td>
+                        <a href="/delete/{{ application[0] }}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
+</html>
+
+
