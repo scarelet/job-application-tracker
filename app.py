@@ -191,6 +191,34 @@ def create_application():
         "id": application_id
     }, 201
 
+@app.route("/api/applications/<int:id>", methods=["PUT"])
+def update_application(id):
+    data = request.get_json()
+
+    company = data["company"]
+    job_title = data["job_title"]
+    date = data["date"]
+    status = data["status"]
+    url = data.get("url", "")
+
+    conn = sqlite3.connect("database.db")
+
+    conn.execute(
+        """
+        UPDATE applications
+        SET company = ?, job_title = ?, date = ?, status = ?, url = ?
+        WHERE id = ?
+        """,
+        (company, job_title, date, status, url, id)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "message": "Application updated successfully"
+    }
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True)
