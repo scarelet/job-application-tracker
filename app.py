@@ -160,6 +160,37 @@ def get_applications():
     return results
 
 
+@app.route("/api/applications", methods=["POST"])
+def create_application():
+    data = request.get_json()
+
+    company = data["company"]
+    job_title = data["job_title"]
+    date = data["date"]
+    status = data["status"]
+    url = data.get("url", "")
+
+    conn = sqlite3.connect("database.db")
+
+    cursor = conn.execute(
+        """
+        INSERT INTO applications (company, job_title, date, status, url)
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        (company, job_title, date, status, url)
+    )
+
+    conn.commit()
+
+    application_id = cursor.lastrowid
+
+    conn.close()
+
+    return {
+        "message": "Application created successfully",
+        "id": application_id
+    }, 201
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True)
