@@ -88,11 +88,14 @@ def edit_application(id):
     conn = sqlite3.connect("database.db")
 
     if request.method == "POST":
-        company = request.form["company"]
-        job_title = request.form["job_title"]
-        date = request.form["date"]
-        status = request.form["status"]
-        url = request.form["url"]
+        company = request.form.get("company", "").strip()
+        job_title = request.form.get("job_title", "").strip()
+        date = request.form.get("date", "").strip()
+        status = request.form.get("status", "").strip()
+        url = request.form.get("url", "").strip()
+
+        if not company or not job_title or not date:
+            return "Company, job title, and date are required.", 400
 
         conn.execute(
             """
