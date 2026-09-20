@@ -219,6 +219,22 @@ def update_application(id):
         "message": "Application updated successfully"
     }
 
+@app.route("/api/applications/<int:id>", methods=["DELETE"])
+def delete_application_api(id):
+    conn = sqlite3.connect("database.db")
+
+    conn.execute(
+        "DELETE FROM applications WHERE id = ?",
+        (id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "message": "Application deleted successfully"
+    }
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True)
