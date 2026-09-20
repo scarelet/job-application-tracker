@@ -1,5 +1,7 @@
 # Job Application Tracker
 
+![Job Application Tracker Dashboard](screenshots/dashboard.png)
+
 A web application for tracking job applications, interviews, offers, and rejections in one place.
 
 ## Features
