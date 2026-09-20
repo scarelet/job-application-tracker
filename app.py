@@ -241,7 +241,8 @@ def delete_application_api(id):
         "message": "Application deleted successfully"
     }
 
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
 
