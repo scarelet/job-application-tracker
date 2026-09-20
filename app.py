@@ -95,7 +95,10 @@ def edit_application(id):
         url = request.form.get("url", "").strip()
 
         if not company or not job_title or not date:
-            return "Company, job title, and date are required.", 400
+            return render_template(
+                "add_application.html",
+                error="Company, job title, and date are required."
+            ), 400
 
         conn.execute(
             """

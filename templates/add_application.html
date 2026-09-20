@@ -17,6 +17,9 @@
         <h1>Add Job Application</h1>
 
         <form method="POST" action="/add">
+            {% if error %}
+                <p class="error-message">{{ error }}</p>
+            {% endif %}
 
             <label for="company">Company</label>
             <input type="text" id="company" name="company" placeholder="e.g. RBC">

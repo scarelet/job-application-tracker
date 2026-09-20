@@ -80,11 +80,14 @@
                     <td>{{ application[1] }}</td>
                     <td>{{ application[2] }}</td>
                     <td>{{ application[3] }}</td>
-                    <td>{{ application[4] }}</td>
                     <td>
-                        <a href="/edit/{{ application[0] }}">Edit</a>
-    |
-                        <a href="/delete/{{ application[0] }}">Delete</a>
+                        <span class="status status-{{ application[4]|lower }}">
+                            {{ application[4] }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="/edit/{{ application[0] }}" class="edit-link">Edit</a>
+                        <a href="/delete/{{ application[0] }}" class="delete-link">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
