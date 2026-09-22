@@ -20,6 +20,23 @@
             <p class="error-message">{{ error }}</p>
         {% endif %}
 
+        <!-- AI auto-fill panel -->
+        <div class="ai-panel" style="border:1px solid #ddd; border-radius:8px; padding:16px; margin-bottom:20px;">
+            <label for="job_description"><strong>Paste job description (optional)</strong></label>
+            <textarea id="job_description" rows="6" style="width:100%; margin-top:6px;"
+                placeholder="Paste the full job posting here..."></textarea>
+
+            <button type="button" id="autofill_btn" style="margin-top:10px;">
+                ✨ Auto-fill with AI
+            </button>
+            <span id="ai_status" style="margin-left:10px; font-size:0.9em; color:#666;"></span>
+
+            <div id="talking_points" style="margin-top:14px; display:none;">
+                <strong>Suggested resume talking points for this posting:</strong>
+                <ul id="talking_points_list"></ul>
+            </div>
+        </div>
+
         <form method="POST">
 
             <label for="company">Company</label>
@@ -51,6 +68,62 @@
         <a href="/" class="back-button">← Back to Dashboard</a>
 
     </div>
+
+    <script>
+        document.getElementById("autofill_btn").addEventListener("click", async function () {
+            const description = document.getElementById("job_description").value.trim();
+            const statusEl = document.getElementById("ai_status");
+            const btn = document.getElementById("autofill_btn");
+
+            if (!description) {
+                statusEl.textContent = "Paste a job description first.";
+                return;
+            }
+
+            btn.disabled = true;
+            statusEl.textContent = "Thinking...";
+
+            try {
+                const res = await fetch("/api/parse-job", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ description })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    statusEl.textContent = data.error || "Something went wrong.";
+                    return;
+                }
+
+                if (data.company) {
+                    document.getElementById("company").value = data.company;
+                }
+                if (data.job_title) {
+                    document.getElementById("job_title").value = data.job_title;
+                }
+
+                const list = document.getElementById("talking_points_list");
+                list.innerHTML = "";
+                (data.resume_talking_points || []).forEach(function (point) {
+                    const li = document.createElement("li");
+                    li.textContent = point;
+                    list.appendChild(li);
+                });
+
+                if ((data.resume_talking_points || []).length > 0) {
+                    document.getElementById("talking_points").style.display = "block";
+                }
+
+                statusEl.textContent = "Done — review the fields below.";
+            } catch (err) {
+                statusEl.textContent = "Network error — check your connection and try again.";
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    </script>
 
 </body>
 </html>
