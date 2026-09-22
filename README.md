@@ -47,10 +47,6 @@ A full-stack web application for tracking job applications, interviews, offers, 
 | DELETE | `/api/applications/<id>` | Delete an application    |
 | POST   | `/api/parse-job`         | Parse a pasted job posting via Gemini and return company, job title, and suggested resume talking points |
 
-## Screenshots
-
-![Add application with AI auto-fill](screenshots/ai-autofill.png)
-*Paste a job posting and let AI extract the details and suggest resume talking points.*
 
 ## How to Run Locally
 
